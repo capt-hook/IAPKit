@@ -72,19 +72,12 @@ public class Store<Product: Purchaseable> {
     
     // AppStoreReceipt, for the App Store App Item, NOT IAP items
     public var appStoreReceipt: AppStoreReceipt? {
+        
         guard ReceiptValidator.hasReceipt else {
             return nil
         }
-        var products = ReceiptValidator.validatedProducts
-        if (products?.count)! > 0 {
-            products = nil
-        }
-        
         return ReceiptValidator.appStoreReceipt
     }
-    
-    
-    
     
     /// A property to determine if the app bundle
     /// contains any purchases.  This is done by
