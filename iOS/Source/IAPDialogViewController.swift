@@ -66,7 +66,7 @@ class IAPDialogViewController: IAPViewController {
     // MARK: Public Properties
     
     var cancellationHandler: IAPCancellationHandler?
-    
+    var restoreHandler: IAPRestoreHandler?
     
     // MARK: Public Computed Properties
     
@@ -95,7 +95,7 @@ class IAPDialogViewController: IAPViewController {
     
     // MARK: Factory
     
-    static func make(accentColor: IAPColor, cancellationHandler: IAPCancellationHandler?) -> IAPDialogViewController {
+    static func make(accentColor: IAPColor, cancellationHandler: IAPCancellationHandler?, restoreHandler: IAPRestoreHandler?) -> IAPDialogViewController {
         // The Storyboard is in the framework bundle
         let frameworkBundle = Bundle(for: IAPDialogViewController.self)
         let controller = UIStoryboard(name: "IAPDialog", bundle: frameworkBundle).instantiateInitialViewController() as! IAPDialogViewController
@@ -104,6 +104,7 @@ class IAPDialogViewController: IAPViewController {
         controller.accentColor = accentColor
         controller.selectionColor = accentColor.withAlphaComponent(0.4)
         controller.cancellationHandler = cancellationHandler
+        controller.restoreHandler = restoreHandler
         return controller
     }
     
@@ -294,7 +295,10 @@ private extension IAPDialogViewController {
     
     @IBAction func restore() {
         showActivityView()
-        SKPaymentQueue.default().restoreCompletedTransactions()
+        let didRestore = restoreHandler?() ?? false
+        if !didRestore {
+            SKPaymentQueue.default().restoreCompletedTransactions()
+        }
     }
     
     @IBAction func dismiss() {

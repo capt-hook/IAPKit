@@ -32,6 +32,8 @@ import StoreKit
 /// conduct the full payment workflow, including presenting appropriate UI.
 public class Store<Product: Purchaseable> {
     
+    public var restoreHandler: IAPRestoreHandler?
+    
     private let productsRequestManager = ProductsRequestManager()
     private let paymentTransactionObserver = PaymentTransactionObserver()
     
@@ -155,7 +157,7 @@ public class Store<Product: Purchaseable> {
         let modalViewController = IAPDialogViewController.make(accentColor: Product.accentColorForStore,
                                                                cancellationHandler: {
                                                                 self.dismissAvailablePurchasesModal(wasCancelled: true)
-        })
+        }, restoreHandler: restoreHandler)
         
         presentingViewController.present(modalViewController, animated: true, completion: nil)
         self.modalViewController = modalViewController
