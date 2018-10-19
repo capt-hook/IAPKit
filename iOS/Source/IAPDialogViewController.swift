@@ -295,9 +295,17 @@ private extension IAPDialogViewController {
     
     @IBAction func restore() {
         showActivityView()
-        let didRestore = restoreHandler?() ?? false
-        if !didRestore {
+        let defaultRestoreHandler = {
             SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+        if let restoreHandler = restoreHandler {
+            restoreHandler { didRestore in
+                if !didRestore {
+                    defaultRestoreHandler()
+                }
+            }
+        } else {
+            defaultRestoreHandler()
         }
     }
     

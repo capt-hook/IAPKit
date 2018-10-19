@@ -154,10 +154,25 @@ public class Store<Product: Purchaseable> {
         
         modalDismissalCompletion = completion
         
-        let modalViewController = IAPDialogViewController.make(accentColor: Product.accentColorForStore,
-                                                               cancellationHandler: {
-                                                                self.dismissAvailablePurchasesModal(wasCancelled: true)
-        }, restoreHandler: restoreHandler)
+        let modalViewController = IAPDialogViewController.make(
+            accentColor: Product.accentColorForStore,
+            cancellationHandler: {
+                self.dismissAvailablePurchasesModal(wasCancelled: true)
+        },
+            restoreHandler: { [weak self] completion in
+                
+                guard let self = self else { return }
+                if let restoreHandler = self.restoreHandler {
+                    restoreHandler { didRestore in
+                        completion(didRestore)
+                        if didRestore {
+                            self.dismissAvailablePurchasesModal(wasCancelled: false)
+                        }
+                    }
+                } else {
+                    completion(false)
+                }
+        })
         
         presentingViewController.present(modalViewController, animated: true, completion: nil)
         self.modalViewController = modalViewController
