@@ -29,5 +29,5 @@ import Foundation
 public typealias ProductIdentifier = String
 public typealias PurchaseDate = Date
 public typealias IAPCancellationHandler = () -> Void
-public typealias IAPRestoreHandler = (_ completion: (Bool) -> Void) -> Void
+public typealias IAPRestoreHandler = (_ completion: @escaping (Bool) -> Void) -> Void
 public typealias IAPCompletionHandler = (_ wasCancelled: Bool) -> Void
