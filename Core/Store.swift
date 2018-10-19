@@ -196,6 +196,8 @@ public class Store<Product: Purchaseable> {
                     storeProducts.append(storeProduct)
                 }
                 
+                storeProducts.sort(by: { Product(productIdentifier: $0.skProduct.productIdentifier)! < Product(productIdentifier: $1.skProduct.productIdentifier)! })
+                
                 modalViewController.products = storeProducts
                 
             case .error(let error):
