@@ -60,11 +60,11 @@ class IAPDialogViewController: IAPViewController {
     private let collectionViewLayout = UICollectionViewFlowLayout()
     private var accentColor: IAPColor?
     private var selectionColor: IAPColor?
-    private var selectedIndex: IndexPath?
     
     
     // MARK: Public Properties
     
+    var selectedIndex: IndexPath?
     var cancellationHandler: IAPCancellationHandler?
     var restoreHandler: IAPRestoreHandler?
     
